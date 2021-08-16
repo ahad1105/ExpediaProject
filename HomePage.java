@@ -1,6 +1,9 @@
-package POM;
+package pages;
+
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,12 +22,24 @@ public class HomePage {
 	By done = By.cssSelector("button[data-stid='apply-date-picker']");
 	By search =By.cssSelector("button[type='submit']");
 	
-	By sign_in =By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/header[1]/header[1]/div[1]/div[1]/div[2]/div[1]/button[1]/div[1]");
+	By sign_in =By.xpath("//button[normalize-space()='Sign in']");
 	By signin_button =By.xpath("//a[normalize-space()='Sign in']");
+	By signinInPopUp = By.linkText("Sign in");
 	By createaccount_button =By.xpath("//a[normalize-space()='Create a free account']");
 	
-	public void SignIn() {
-		driver.findElement(sign_in).click();
+	public void SignIn() throws Exception {
+		
+		try
+		{
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			Thread.sleep(5000);
+			driver.findElement(sign_in).click();
+			driver.findElement(signinInPopUp).click();
+		}
+		catch(NoSuchElementException e) {
+			//driver.navigate().to("https://www.expedia.co.in/user/signin?ckoflag=0&uurl=e3id%3Dredr%26rurl%3D%2F");
+			e.printStackTrace();
+		}
 	}
 	
 	public void SignIn_Button() {
@@ -32,7 +47,16 @@ public class HomePage {
 	}
 	
 	public void CreateAccount_Button() {
-		driver.findElement(createaccount_button).click();
+		try
+		{
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			driver.findElement(sign_in).click();
+			driver.findElement(createaccount_button).click();
+		}
+		catch(NoSuchElementException e) {
+			driver.navigate().to("https://www.expedia.co.in/user/createaccount?%20&uurl=e3id%3Dredr%26rurl%3D%2F");
+		}
+		
 	}
 	
 	public void Location(String cityName) {
